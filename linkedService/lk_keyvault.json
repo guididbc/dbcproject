@@ -1,0 +1,10 @@
+{
+	"name": "lk_keyvault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://Key-Learn-Data-DBC.vault.azure.net/"
+		}
+	}
+}

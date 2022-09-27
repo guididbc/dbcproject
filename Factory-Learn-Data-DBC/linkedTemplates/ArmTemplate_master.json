@@ -1,0 +1,63 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Factory-Learn-Data-DBC"
+		},
+		"lk_datalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlslearningdbc.dfs.core.windows.net/"
+		},
+		"lk_dbsql_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "DbSecret"
+		},
+		"lk_keyvault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://Key-Learn-Data-DBC.vault.azure.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "Factory-Learn-Data-DBC_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"lk_keyvault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('lk_keyvault_properties_typeProperties_baseUrl')]"
+					},
+					"lk_datalake_properties_typeProperties_url": {
+						"value": "[parameters('lk_datalake_properties_typeProperties_url')]"
+					},
+					"lk_dbsql_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('lk_dbsql_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

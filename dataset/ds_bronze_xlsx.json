@@ -19,11 +19,17 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "Plan1",
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "cor.xlsx",
-				"folderPath": "xlsxfiles",
-				"fileSystem": "sistema"
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": [

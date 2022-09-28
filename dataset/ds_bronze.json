@@ -1,5 +1,5 @@
 {
-	"name": "ds_bronze_bianca",
+	"name": "ds_bronze",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",
@@ -12,6 +12,9 @@
 			"filename": {
 				"type": "string"
 			}
+		},
+		"folder": {
+			"name": "biamarostica - DS/pratica 1"
 		},
 		"annotations": [],
 		"type": "Parquet",

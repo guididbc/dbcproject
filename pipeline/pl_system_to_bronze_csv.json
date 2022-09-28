@@ -126,7 +126,7 @@
 									"parameters": {
 										"container": "sistema/csvfiles",
 										"filename": {
-											"value": "@replace(item().name, '.csv', '.parquet' )",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
@@ -139,6 +139,10 @@
 									"parameters": {
 										"container": {
 											"value": "@concat('bronze/biamarostica/', item().name)",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@replace(item().name, '.csv', '.parquet')",
 											"type": "Expression"
 										}
 									}

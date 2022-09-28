@@ -127,7 +127,7 @@
 									"parameters": {
 										"container": "sistema/csvfiles",
 										"filename": {
-											"value": "@replace(item().name, '.csv', '.parquet')",
+											"value": "@replace(item().name, '.csv', '')",
 											"type": "Expression"
 										}
 									}
@@ -139,7 +139,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@concat('bronze/',replace(item().name, '.parquet', ''))",
+											"value": "@concat('bronze/',item().name)",
 											"type": "Expression"
 										},
 										"filename": {

@@ -71,6 +71,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('remove_out123').output.Value",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "copia_arquivos",

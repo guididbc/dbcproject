@@ -21,15 +21,9 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().filename",
-					"type": "Expression"
-				},
+				"fileName": "cor.xlsx",
 				"folderPath": "xlsxfiles",
-				"fileSystem": {
-					"value": "@dataset().container",
-					"type": "Expression"
-				}
+				"fileSystem": "sistema"
 			}
 		},
 		"schema": [

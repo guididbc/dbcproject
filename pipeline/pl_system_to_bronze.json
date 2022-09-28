@@ -19,7 +19,7 @@
 						"referenceName": "ds_system_csvfiles",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "sistema",
+							"container": "sistema/csvfiles",
 							"filename": "*.csv"
 						}
 					},
@@ -34,6 +34,35 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "Remover",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Leitura Arquivos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Leitura Arquivos').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(equals(item().name,'out123.csv'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
 		"annotations": []

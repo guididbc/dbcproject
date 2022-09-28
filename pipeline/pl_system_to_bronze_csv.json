@@ -34,6 +34,29 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "Remove arquivo",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Ler arquivos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Ler arquivos').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(equals(item().name, 'out123.csv'))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {

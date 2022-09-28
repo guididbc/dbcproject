@@ -138,7 +138,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@concat('bronze/biamarostica/', item().name)",
+											"value": "@concat('bronze/biamarostica/', replace(item().name, '.csv', ''))",
 											"type": "Expression"
 										},
 										"filename": {

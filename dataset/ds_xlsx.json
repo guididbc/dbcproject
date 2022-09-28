@@ -13,6 +13,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "Pratica 1 - DS"
+		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {

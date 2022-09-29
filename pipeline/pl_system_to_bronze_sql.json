@@ -94,7 +94,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze/cunhadbc/cidades",
-										"filename": "*"
+										"filename": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
 									}
 								}
 							],

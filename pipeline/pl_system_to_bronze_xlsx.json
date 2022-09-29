@@ -58,7 +58,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "bronze/cunhadbc/cor",
-							"filename": "@replace(item().name, '.csv', '')"
+							"filename": "@replace('cor.xlsx', '.xlsx', '')"
 						}
 					}
 				]

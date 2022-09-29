@@ -1,5 +1,5 @@
 {
-	"name": "ds_bronze",
+	"name": "ds_system_csvfiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",
@@ -14,14 +14,10 @@
 			}
 		},
 		"folder": {
- bianca-pratica
-			"name": "biamarostica - DS/pratica 1"
-
 			"name": "Pratica 1 - DS"
- main
 		},
 		"annotations": [],
-		"type": "Parquet",
+		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
@@ -34,12 +30,13 @@
 					"type": "Expression"
 				}
 			},
-			"compressionCodec": "snappy"
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
 		},
 		"schema": [
 			{
-				"name": "Prop_0",
-				"type": "UTF8"
+				"type": "String"
 			}
 		]
 	}

@@ -3,7 +3,11 @@
 	"properties": {
 		"activities": [
 			{
+     bianca-pratica
 				"name": "Ler arquivos",
+
+				"name": "Leitura Arquivos",
+      main
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +20,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
+         bianca-pratica
 						"referenceName": "ds_system_csv",
+
+						"referenceName": "ds_system_csvfiles",
+           main
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "sistema/csvfiles",
@@ -28,6 +36,10 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+         bianca-pratica
+
+						"recursive": true,
+         main
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -36,11 +48,19 @@
 				}
 			},
 			{
+       bianca-pratica
 				"name": "Remove arquivo",
 				"type": "Filter",
 				"dependsOn": [
 					{
 						"activity": "Ler arquivos",
+
+				"name": "Remover",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Leitura Arquivos",
+          main
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -49,7 +69,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
+ bianca-pratica
 						"value": "@activity('Ler arquivos').output.childItems",
+
+						"value": "@activity('Leitura Arquivos').output.childItems",
+ main
 						"type": "Expression"
 					},
 					"condition": {
@@ -63,7 +87,11 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
+ bianca-pratica
 						"activity": "Remove arquivo",
+
+						"activity": "Remover",
+ main
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -72,12 +100,22 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
+ bianca-pratica
 						"value": "@activity('Remove arquivo').output.Value",
 						"type": "Expression"
 					},
 					"activities": [
 						{
 							"name": "Copia arquivos",
+
+						"value": "@activity('Remover').output.Value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Copia Arquivos",
+ main
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -121,7 +159,11 @@
 							},
 							"inputs": [
 								{
+ bianca-pratica
 									"referenceName": "ds_system_csv",
+
+									"referenceName": "ds_system_csvfiles",
+ main
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "sistema/csvfiles",
@@ -138,11 +180,19 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
+ bianca-pratica
 											"value": "@concat('bronze/biamarostica/', replace(item().name, '.csv', ''))",
 											"type": "Expression"
 										},
 										"filename": {
 											"value": "@replace(item().name, '.csv', '.parquet')",
+
+											"value": "@concat('bronze/',replace(item().name,'.csv',''))",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@replace(item().name,'.csv','.parquet')",
+ main
 											"type": "Expression"
 										}
 									}
@@ -154,7 +204,11 @@
 			}
 		],
 		"folder": {
+ bianca-pratica
 			"name": "biamarostica - PL/prática1"
+
+			"name": "Pratica 1 - PL"
+ main
 		},
 		"annotations": []
 	}

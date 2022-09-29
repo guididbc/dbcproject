@@ -1,5 +1,5 @@
 {
-	"name": "pl_system_to_bronze_sql",
+	"name": "pl_bronze_to_sql_parquet",
 	"properties": {
 		"activities": [
 			{

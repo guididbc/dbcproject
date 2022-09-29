@@ -17,7 +17,7 @@
 				"folderPath": "csvfiles",
 				"fileSystem": "sistema"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": ";",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},

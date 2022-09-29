@@ -5,6 +5,14 @@
 			"referenceName": "lk_datalake",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"container": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "cunhadbc - ds/ds - pratica1"
 		},
@@ -12,7 +20,15 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

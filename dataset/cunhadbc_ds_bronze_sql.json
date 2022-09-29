@@ -1,0 +1,33 @@
+{
+	"name": "cunhadbc_ds_bronze_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lk_dbsql",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"schema": {
+				"type": "string"
+			},
+			"table": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "cunhadbc - ds/ds - pratica2"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().table",
+				"type": "Expression"
+			}
+		}
+	}
+}

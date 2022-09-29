@@ -260,7 +260,7 @@
 				}
 			},
 			{
-				"name": "proc_cidade_copy1",
+				"name": "proc_cor",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -279,7 +279,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[usp_remove_cidades_duplicadas]"
+					"storedProcedureName": "[dbo].[usp_remove_cores_duplicadas]"
 				},
 				"linkedServiceName": {
 					"referenceName": "lk_dbsql",

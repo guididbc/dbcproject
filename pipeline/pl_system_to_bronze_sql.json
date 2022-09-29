@@ -239,7 +239,7 @@
 									"parameters": {
 										"container": "bronzer/cunhadbc/cor",
 										"filename": {
-											"value": "@item().name",
+											"value": "@replace(item().name, '.parquet', '')",
 											"type": "Expression"
 										}
 									}

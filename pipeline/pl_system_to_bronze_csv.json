@@ -34,6 +34,29 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "remove_cidades",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "leitura_arquivos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('leitura_arquivos').output.name",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(equals(item().name,'cidades.csv'))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {

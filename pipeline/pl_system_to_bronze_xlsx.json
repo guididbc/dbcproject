@@ -44,7 +44,11 @@
 				},
 				"inputs": [
 					{
+ bianca-pratica
+						"referenceName": "ds_system_xlsx",
+
 						"referenceName": "ds_xlsx",
+ main
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "sistema/xlsxfiles",
@@ -57,15 +61,24 @@
 						"referenceName": "ds_bronze",
 						"type": "DatasetReference",
 						"parameters": {
+ bianca-pratica
+							"container": "bronze/biamarostica/cor",
+							"filename": "cor.xlsx"
+
 							"container": "bronze/cor",
 							"filename": "cor.parquet"
+ main
 						}
 					}
 				]
 			}
 		],
 		"folder": {
+ bianca-pratica
+			"name": "biamarostica - PL/prática1"
+
 			"name": "Pratica 1 - PL"
+ main
 		},
 		"annotations": []
 	}

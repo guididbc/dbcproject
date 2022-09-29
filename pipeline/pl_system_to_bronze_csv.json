@@ -126,7 +126,7 @@
 									"parameters": {
 										"container": "sistema/csvfiles",
 										"filename": {
-											"value": "@activity('leitura_arquivos').output.name",
+											"value": "@activity('leitura_arquivos').output.Value",
 											"type": "Expression"
 										}
 									}

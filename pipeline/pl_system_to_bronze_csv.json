@@ -124,9 +124,9 @@
 									"referenceName": "ds_bronze_csv",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "system/csvfiles/",
+										"container": "system/csvfiles",
 										"filename": {
-											"value": "@item().Name",
+											"value": "item().name",
 											"type": "Expression"
 										}
 									}

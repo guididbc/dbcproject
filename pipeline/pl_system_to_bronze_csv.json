@@ -212,7 +212,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "bronze/cunhadbc/cidades",
-							"filename": "@replace(item().name, '.csv', '')"
+							"filename": "@replace('cidades.csv', '.csv', '')"
 						}
 					}
 				]

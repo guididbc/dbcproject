@@ -125,7 +125,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "sistema/csvfiles",
-										"filename": "@item().name"
+										"filename": "*.csv"
 									}
 								}
 							],

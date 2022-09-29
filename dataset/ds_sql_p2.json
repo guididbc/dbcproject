@@ -1,0 +1,33 @@
+{
+	"name": "ds_sql_p2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lk_dbsql",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Esquema": {
+				"type": "string"
+			},
+			"Tabela": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "danieldanielli_p2"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().Esquema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().Tabela",
+				"type": "Expression"
+			}
+		}
+	}
+}

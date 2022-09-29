@@ -125,10 +125,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "sistema/csvfiles",
-										"filename": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
+										"filename": "@item().name"
 									}
 								}
 							],

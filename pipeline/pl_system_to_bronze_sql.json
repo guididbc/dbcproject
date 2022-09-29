@@ -74,7 +74,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table cunhadbc_cidade",
+									"preCopyScript": "truncate table pratica.cunhadbc_cidade",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -216,7 +216,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table cunhadbc_cor",
+									"preCopyScript": "truncate table pratica.cunhadbc_cor",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",

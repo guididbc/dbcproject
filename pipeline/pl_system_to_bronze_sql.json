@@ -74,7 +74,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table cunhadbc_cidades",
+									"preCopyScript": "truncate table cunhadbc_cidade",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",

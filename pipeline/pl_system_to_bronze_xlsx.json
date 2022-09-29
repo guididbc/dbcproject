@@ -44,7 +44,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_bronze_xlsx",
+						"referenceName": "cunhadbc_ds_bronze_xlsx",
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "sistema/xlsxfiles/",
@@ -54,7 +54,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_bronze_parquet",
+						"referenceName": "cunhadbc_ds_bronze_parquet",
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "bronze/cunhadbc/cor",

@@ -1,5 +1,5 @@
 {
-	"name": "ds_bronze_parquet",
+	"name": "cunhadbc_ds_bronze_parquet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",

@@ -136,7 +136,7 @@
 									"parameters": {
 										"container": "bronze/cunhadbc/",
 										"filename": {
-											"value": "@replace(item().name, '.csv', '')",
+											"value": "@item().Value",
 											"type": "Expression"
 										}
 									}

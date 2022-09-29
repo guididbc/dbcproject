@@ -107,7 +107,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cidade"
+										"table": "cunhadbc_cidade"
 									}
 								}
 							]

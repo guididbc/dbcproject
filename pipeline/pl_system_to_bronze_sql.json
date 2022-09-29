@@ -95,7 +95,7 @@
 									"parameters": {
 										"container": "bronze/cunhadbc/cidades",
 										"filename": {
-											"value": "@item().name",
+											"value": "@replace(item().name, '.parquet', '')",
 											"type": "Expression"
 										}
 									}

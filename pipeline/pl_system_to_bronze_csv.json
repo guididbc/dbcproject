@@ -57,6 +57,91 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "criar_arquivo_parquet",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "remove_cidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('leitura_arquivos').output.itemValue",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copia_arquivo_bronze",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_bronze_csv",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "system/csvfiles/",
+										"filename": "*.csv"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "bronze/cunhadbc/",
+										"filename": "@concat(dataset().fileName,'.parquet')"
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"folder": {

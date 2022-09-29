@@ -139,7 +139,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@concat('bronze/cunhadbc/',item().name)",
+											"value": "@concat('bronze/cunhadbc/',replace(item().name, '.csv', ''))",
 											"type": "Expression"
 										},
 										"filename": {

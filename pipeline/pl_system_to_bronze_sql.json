@@ -33,7 +33,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "insert_cidade",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -114,6 +114,26 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "proc_cidade",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "insert_cidade",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"folder": {

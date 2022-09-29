@@ -125,7 +125,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "system/csvfiles/",
-										"filename": "@item().name"
+										"filename": {
+											"value": "item().name",
+											"type": "Expression"
+										}
 									}
 								}
 							],
@@ -136,7 +139,7 @@
 									"parameters": {
 										"container": "bronze/cunhadbc/",
 										"filename": {
-											"value": "@item().Value",
+											"value": "@replace(item().name, '.csv', '')",
 											"type": "Expression"
 										}
 									}

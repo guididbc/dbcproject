@@ -49,7 +49,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('leitura_arquivos').output.name",
+						"value": "@activity('leitura_arquivos').output.childItems",
 						"type": "Expression"
 					},
 					"condition": {

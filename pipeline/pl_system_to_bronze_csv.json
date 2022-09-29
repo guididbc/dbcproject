@@ -138,7 +138,10 @@
 									"referenceName": "ds_bronze_parquet",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bronze/cunhadbc/",
+										"container": {
+											"value": "bronze/cunhadbc/'@replace(item().name, '.csv', '')'",
+											"type": "Expression"
+										},
 										"filename": {
 											"value": "@replace(item().name, '.csv', '')",
 											"type": "Expression"

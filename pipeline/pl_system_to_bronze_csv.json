@@ -126,7 +126,7 @@
 									"parameters": {
 										"container": "sistema/csvfiles",
 										"filename": {
-											"value": "item().name",
+											"value": "@item().Value",
 											"type": "Expression"
 										}
 									}

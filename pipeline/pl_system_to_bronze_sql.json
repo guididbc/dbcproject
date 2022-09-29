@@ -34,7 +34,7 @@
 				}
 			},
 			{
-				"name": "insert_cidade",
+				"name": "forEach_cidade",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -52,7 +52,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data",
+							"name": "insert_cidade",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -122,7 +122,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "insert_cidade",
+						"activity": "forEach_cidade",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -176,7 +176,7 @@
 				}
 			},
 			{
-				"name": "insert_cor",
+				"name": "forEach_cor",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -194,7 +194,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data_copy1",
+							"name": "insert_cor",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -264,7 +264,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "insert_cor",
+						"activity": "forEach_cor",
 						"dependencyConditions": [
 							"Succeeded"
 						]

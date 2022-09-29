@@ -236,7 +236,7 @@
 									"referenceName": "cunhadbc_ds_bronze_parquet",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bronzer/cunhadbc/cor",
+										"container": "bronze/cunhadbc/cor",
 										"filename": {
 											"value": "@replace(item().name, '.parquet', '')",
 											"type": "Expression"

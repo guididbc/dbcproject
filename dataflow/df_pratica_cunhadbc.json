@@ -12,7 +12,7 @@
 						"referenceName": "cunhadbc_ds_bronze_sql",
 						"type": "DatasetReference"
 					},
-					"name": "customers"
+					"name": "cor"
 				},
 				{
 					"dataset": {
@@ -33,15 +33,16 @@
 				"     validateSchema: false,",
 				"     batchSize: 0,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> customers",
+				"     format: 'table') ~> cor",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> cidade",
-				"customers, cidade join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"cor, cidade join(customer_state == ERROR_FUNCTION(''),",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
+				"     partitionBy('hash', 1),",
 				"     broadcast: 'auto')~> join1"
 			]
 		}

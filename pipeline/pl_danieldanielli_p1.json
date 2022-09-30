@@ -1,6 +1,64 @@
 {
 	"name": "pl_danieldanielli_p1",
 	"properties": {
+		"activities": [
+			{
+				"name": "busca CSV",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_csv_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sistema/csvfiles",
+							"filename": "*"
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Remove arquivo",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "busca CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('busca CSV').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(equals(item().name, 'out123.csv'))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
 		"folder": {
 			"name": "danieldanielli_p2"
 		},

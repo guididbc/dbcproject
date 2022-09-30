@@ -1,0 +1,38 @@
+{
+	"name": "pl_bronze_to_sql_dbo",
+	"properties": {
+		"activities": [
+			{
+				"name": "retorna_dbo",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "cunhadbc_ds_bronze_sql",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "dbo"
+						}
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "cunhadbc - pl/pl - pratica 3"
+		},
+		"annotations": []
+	}
+}

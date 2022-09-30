@@ -46,7 +46,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('retorna_dbo').output.value",
+						"value": "@activity('retorna_pratica').output.value",
 						"type": "Expression"
 					},
 					"activities": [

@@ -189,7 +189,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Ler arquivos Bronze cidades').output.childItems",
+						"value": "@activity('Ler arquivos Bronze cor').output.childItems",
 						"type": "Expression"
 					},
 					"activities": [
@@ -269,12 +269,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Ler arquivos Bronze cidades').output.childItems",
+						"value": "@activity('Ler arquivos Bronze_movies').output.childItems",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "copiar cidades_copy1_copy1",
+							"name": "copiar movies",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -316,7 +316,7 @@
 									"referenceName": "ds_bronze_dani",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bronze/DanielDanielli/cidades",
+										"container": "bronze/DanielDanielli/moviesDB",
 										"filename": "@item().name"
 									}
 								}
@@ -327,7 +327,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Esquema": "daniel",
-										"Tabela": "cidades"
+										"Tabela": "moviesDB"
 									}
 								}
 							]

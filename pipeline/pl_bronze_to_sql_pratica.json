@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "retorna_dbo",
+				"name": "retorna_pratica",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -37,7 +37,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "retorna_dbo",
+						"activity": "retorna_pratica",
 						"dependencyConditions": [
 							"Succeeded"
 						]

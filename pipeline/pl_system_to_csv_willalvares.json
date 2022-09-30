@@ -3,41 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ler arquivos",
-				"type": "GetMetadata",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "ds_csv_willalvares",
-						"type": "DatasetReference",
-						"parameters": {
-							"container": "sistema/csvfiles",
-							"filename": "*.csv"
-						}
-					},
-					"fieldList": [
-						"childItems"
-					],
-					"storeSettings": {
-						"type": "AzureBlobFSReadSettings",
-						"modifiedDatetimeStart": "2022-09-30T00:00:00.259Z",
-						"modifiedDatetimeEnd": "2022-09-30T00:00:00.373Z",
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
-					}
-				}
-			},
-			{
 				"name": "remove arquivo",
 				"type": "Filter",
 				"dependsOn": [
@@ -57,6 +22,39 @@
 					"condition": {
 						"value": "@not(equals(item().name, 'out123.csv'))",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ler arquivos",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_csv_willalvares",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sistema/csvfiles",
+							"filename": "*"
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
 					}
 				}
 			}

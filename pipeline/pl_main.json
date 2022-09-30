@@ -1,0 +1,64 @@
+{
+	"name": "pl_main",
+	"properties": {
+		"activities": [
+			{
+				"name": "ingestion_bronze",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_ingestion",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": false
+				}
+			},
+			{
+				"name": "getting bronze, process and store silver ",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ingestion_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "getting bronze, process and store gold ",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "getting bronze, process and store silver ",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			}
+		],
+		"folder": {
+			"name": "project"
+		},
+		"annotations": []
+	}
+}

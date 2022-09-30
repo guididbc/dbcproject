@@ -602,6 +602,99 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_project')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lk_datalake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "project"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Prop_0",
+						"type": "UTF8"
+					},
+					{
+						"name": "Prop_1",
+						"type": "UTF8"
+					},
+					{
+						"name": "Prop_2",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lk_datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sql_to_bronze')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"schema": {
+						"type": "string"
+					},
+					"table": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "project"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lk_dbsql')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1106,435 +1199,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_pratica02')]",
+			"name": "[concat(parameters('factoryName'), '/pl_ingestion')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Get Metadata Cor",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_bronze",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "bronze/cor",
-									"Filename": "*"
-								}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "Get Metadata Cidades",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_bronze",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "bronze/cidades",
-									"Filename": "*"
-								}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "Get Metadata moviesDB",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_bronze",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "bronze/moviesDB",
-									"Filename": "*"
-								}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "ForEach Cor",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata Cor",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata Cor').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data Cor",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "ParquetSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"tableOption": "autoCreate",
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ds_bronze",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": "bronze/cor",
-												"Filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ds_dbsql",
-											"type": "DatasetReference",
-											"parameters": {
-												"schema": "pratica",
-												"table": "cor"
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "ForEach Cidades",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata Cidades",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata Cidades').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Copy data CIdades",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "ParquetSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"tableOption": "autoCreate",
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ds_bronze",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": "bronze/cidades",
-												"Filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ds_dbsql",
-											"type": "DatasetReference",
-											"parameters": {
-												"schema": "pratica",
-												"table": "cidades"
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "ForEach Cor_copy1_copy1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata moviesDB",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata moviesDB').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Copy data moviesDB",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "ParquetSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"preCopyScript": "TRUNCATE TABLE pratica.moviesDB",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"tableOption": "autoCreate",
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ds_bronze",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": "bronze/moviesDB",
-												"Filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ds_dbsql",
-											"type": "DatasetReference",
-											"parameters": {
-												"schema": "pratica",
-												"table": "moviesDB"
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "SP Cidades",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "ForEach Cidades",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_remove_cidades_duplicadas]"
-						},
-						"linkedServiceName": {
-							"referenceName": "lk_dbsql",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "SP Cor",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "ForEach Cor",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_remove_cores_duplicadas]"
-						},
-						"linkedServiceName": {
-							"referenceName": "lk_dbsql",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pratica"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_bronze')]",
-				"[concat(variables('factoryId'), '/linkedServices/lk_dbsql')]",
-				"[concat(variables('factoryId'), '/datasets/ds_dbsql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_pratica03')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "retorna tabelas",
+						"name": "getting tables",
+						"description": "Obtendo tableas com o schema dbo",
 						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
@@ -1548,12 +1220,12 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME\nFROM INFORMATION_SCHEMA.TABLES \n  WHERE TABLE_TYPE='BASE TABLE'\n  and TABLE_SCHEMA = 'pratica'\nand NOT TABLE_NAME LIKE 'cunha%'",
+								"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME\nFROM INFORMATION_SCHEMA.TABLES \n  WHERE TABLE_TYPE='BASE TABLE'\n  and TABLE_SCHEMA = 'dbo'\n--and NOT TABLE_NAME LIKE 'cunha%'",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
 							"dataset": {
-								"referenceName": "ds_dbsql",
+								"referenceName": "ds_sql_to_bronze",
 								"type": "DatasetReference",
 								"parameters": {
 									"schema": "*",
@@ -1564,11 +1236,11 @@
 						}
 					},
 					{
-						"name": "ForEach1",
+						"name": "ForEach table",
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "retorna tabelas",
+								"activity": "getting tables",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1577,7 +1249,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('retorna tabelas').output.value",
+								"value": "@activity('getting tables').output.value",
 								"type": "Expression"
 							},
 							"activities": [
@@ -1620,7 +1292,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "ds_dbsql",
+											"referenceName": "ds_sql_to_bronze",
 											"type": "DatasetReference",
 											"parameters": {
 												"schema": {
@@ -1636,184 +1308,15 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "ds_bronze",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": "bronze/table_sql",
-												"Filename": {
-													"value": "@concat(concat(item().TABLE_SCHEMA, '_'), item().TABLE_NAME)",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pratica"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_dbsql')]",
-				"[concat(variables('factoryId'), '/datasets/ds_bronze')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_system_to_bronze_csv')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "leitura_arquivos",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "cunhadbc_ds_bronze_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "sistema/csvfiles/",
-									"filename": "*.csv"
-								}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "remove_cidades",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "leitura_arquivos",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('leitura_arquivos').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@not(equals(item().name,'cidades.csv'))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "criar_arquivo_parquet",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "remove_cidades",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('remove_cidades').output.Value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "copia_arquivo_bronze",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "ParquetSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "ParquetWriteSettings"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "cunhadbc_ds_bronze_csv",
-											"type": "DatasetReference",
-											"parameters": {
-												"container": "sistema/csvfiles/",
-												"filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "cunhadbc_ds_bronze_parquet",
+											"referenceName": "ds_project",
 											"type": "DatasetReference",
 											"parameters": {
 												"container": {
-													"value": "@concat('bronze/cunhadbc/',replace(item().name, '.csv', ''))",
+													"value": "@concat('bronze/project/', item().TABLE_NAME)",
 													"type": "Expression"
 												},
 												"filename": {
-													"value": "@replace(item().name, '.csv', '')",
+													"value": "@item().TABLE_NAME",
 													"type": "Expression"
 												}
 											}
@@ -1822,70 +1325,6 @@
 								}
 							]
 						}
-					},
-					{
-						"name": "move_arquivo_cidades",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "cunhadbc_ds_bronze_csv_cidade",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "sistema/csvfiles",
-									"filename": "cidades.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "cunhadbc_ds_bronze_parquet",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "bronze/cunhadbc/cidades",
-									"filename": "@replace('cidades.csv', '.csv', '')"
-								}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -1893,14 +1332,13 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "cunhadbc - pl/pl - pratica1"
+					"name": "project"
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/cunhadbc_ds_bronze_csv')]",
-				"[concat(variables('factoryId'), '/datasets/cunhadbc_ds_bronze_csv_cidade')]",
-				"[concat(variables('factoryId'), '/datasets/cunhadbc_ds_bronze_parquet')]"
+				"[concat(variables('factoryId'), '/datasets/ds_sql_to_bronze')]",
+				"[concat(variables('factoryId'), '/datasets/ds_project')]"
 			]
 		}
 	]

@@ -1,0 +1,29 @@
+{
+	"name": "df_pratica_cunhadbc",
+	"properties": {
+		"folder": {
+			"name": "cunhadbc - df"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cunhadbc_ds_bronze_sql",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     batchSize: 0,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> customers"
+			]
+		}
+	}
+}

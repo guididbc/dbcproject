@@ -12,7 +12,7 @@
 						"referenceName": "cunhadbc_ds_bronze_sql",
 						"type": "DatasetReference"
 					},
-					"name": "cor"
+					"name": "customer"
 				},
 				{
 					"dataset": {
@@ -26,24 +26,52 @@
 			"transformations": [
 				{
 					"name": "join1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          customer_id as string,",
+				"          customer_unique_id as string,",
+				"          customer_zip_code_prefix as string,",
+				"          customer_city as string,",
+				"          customer_state as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table',",
-				"     partitionBy('hash', 1)) ~> cor",
-				"source(allowSchemaDrift: true,",
+				"     format: 'table') ~> customer",
+				"source(output(",
+				"          cod_cidade as string,",
+				"          nome_cidade as string,",
+				"          sigla_estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> cidade",
-				"cor, cidade join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
-				"     joinType:'outer',",
+				"customer, cidade join(customer_state == sigla_estado,",
+				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     partitionBy('hash', 1),",
-				"     broadcast: 'auto')~> join1"
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          customer_id,",
+				"          customer_unique_id,",
+				"          customer_zip_code_prefix,",
+				"          customer_city,",
+				"          customer_state,",
+				"          cod_cidade",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(customer_state),",
+				"     qtd_customer = countDistinct(customer_id)) ~> aggregate1"
 			]
 		}
 	}

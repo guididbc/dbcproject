@@ -108,7 +108,10 @@
 									"referenceName": "cunhadbc_ds_bronze_parquet",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bronze/cunhadbc/table_sql",
+										"container": {
+											"value": "@concat('bronze/cunhadbc/table_sql',item().TABLE_NAME)",
+											"type": "Expression"
+										},
 										"filename": {
 											"value": "@concat(concat(item().TABLE_SCHEMA, '_'), item().TABLE_NAME)",
 											"type": "Expression"

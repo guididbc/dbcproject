@@ -22,7 +22,15 @@
 					"name": "cidade"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "cunhadbc_ds_bronze_parquet",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "join1"
@@ -32,6 +40,9 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
@@ -71,7 +82,23 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 aggregate(groupBy(customer_state),",
-				"     qtd_customer = countDistinct(customer_id)) ~> aggregate1"
+				"     qtd_customer = countDistinct(customer_id)) ~> aggregate1",
+				"aggregate1 keyGenerate(output(sk as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          customer_state,",
+				"          qtd_customer,",
+				"          sk",
+				"     )) ~> sink1"
 			]
 		}
 	}

@@ -20,7 +20,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "sistema/csvfiles",
-							"filename": "*"
+							"filename": "*.csv"
 						}
 					},
 					"fieldList": [
@@ -34,6 +34,29 @@
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "remove arquivo",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "ler arquivos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('ler arquivos').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(equals(item().name, 'out123.csv'))",
+						"type": "Expression"
 					}
 				}
 			}

@@ -1,0 +1,9 @@
+{
+	"name": "pl_ingestion",
+	"properties": {
+		"folder": {
+			"name": "project"
+		},
+		"annotations": []
+	}
+}

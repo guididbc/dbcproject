@@ -13,7 +13,8 @@
 				"type": "string"
 			},
 			"delimiter": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": ", or ;"
 			}
 		},
 		"folder": {

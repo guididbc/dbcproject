@@ -109,7 +109,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@concat('bronze/cunhadbc/table_sql/',item().TABLE_NAME)",
+											"value": "@concat('bronze/cunhadbc/project/',item().TABLE_NAME)",
 											"type": "Expression"
 										},
 										"filename": {

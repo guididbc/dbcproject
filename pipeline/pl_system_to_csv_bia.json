@@ -28,6 +28,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -138,7 +139,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@concat('bronze/biamarostica', replace(item().name, '.csv', ''))",
+											"value": "@concat('bronze/biamarostica/', replace(item().name, '.csv', ''))",
 											"type": "Expression"
 										},
 										"filename": {

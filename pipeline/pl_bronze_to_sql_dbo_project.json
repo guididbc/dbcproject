@@ -1,5 +1,5 @@
 {
-	"name": "pl_bronze_to_sql_dbo",
+	"name": "pl_bronze_to_sql_dbo_project",
 	"properties": {
 		"activities": [
 			{

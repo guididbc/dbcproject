@@ -11,10 +11,6 @@
 			},
 			"filename": {
 				"type": "string"
-			},
-			"delimiter": {
-				"type": "string",
-				"defaultValue": ", or ;"
 			}
 		},
 		"folder": {
@@ -34,10 +30,7 @@
 					"type": "Expression"
 				}
 			},
-			"columnDelimiter": {
-				"value": "@dataset().delimiter",
-				"type": "Expression"
-			},
+			"columnDelimiter": "*",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""

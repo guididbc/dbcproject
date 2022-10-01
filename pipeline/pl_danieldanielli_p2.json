@@ -328,7 +328,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Esquema": "daniel",
-										"Tabela": "moviesDB"
+										"Tabela": "new_moviesDB"
 									}
 								}
 							]

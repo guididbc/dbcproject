@@ -23,9 +23,7 @@
 							"filename": "*"
 						}
 					},
-					"fieldList": [
-						"childItems"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true,
@@ -115,7 +113,11 @@
 				"outputs": [
 					{
 						"referenceName": "ds_bronze_dani",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/DanielDanielli/",
+							"filename": "*"
+						}
 					}
 				]
 			}

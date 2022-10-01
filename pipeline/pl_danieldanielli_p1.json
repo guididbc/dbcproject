@@ -3,61 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "busca CSV",
-				"type": "GetMetadata",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "ds_csv_cidades_dani",
-						"type": "DatasetReference",
-						"parameters": {
-							"container": "sistema/csvfiles",
-							"filename": "*"
-						}
-					},
-					"fieldList": [],
-					"storeSettings": {
-						"type": "AzureBlobFSReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
-					}
-				}
-			},
-			{
-				"name": "Remove arquivo",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "busca CSV",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('busca CSV').output.childItems",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@not(equals(item().name, 'out123.csv'))",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Copia Cidades",
 				"type": "Copy",
 				"dependsOn": [],
@@ -105,8 +50,8 @@
 						"referenceName": "ds_csv_cidades_dani",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "sistema/csvfiles",
-							"filename": "*"
+							"container": "sistema",
+							"filename": "cidades.csv"
 						}
 					}
 				],
@@ -116,7 +61,71 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "bronze/DanielDanielli/",
-							"filename": "*"
+							"filename": "@replace('cidades.csv', '.csv', '.parquet')"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copia moviesDB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_csv_cidades_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sistema",
+							"filename": "moviesDB.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_bronze_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/DanielDanielli/",
+							"filename": "@replace('moviesDB.csv', '.csv', '.parquet')"
 						}
 					}
 				]

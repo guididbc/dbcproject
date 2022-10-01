@@ -22,7 +22,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "moviesDB.csv",
-				"folderPath": "csvfiles",
+				"folderPath": "DanielDanielli",
 				"fileSystem": {
 					"value": "@dataset().container",
 					"type": "Expression"

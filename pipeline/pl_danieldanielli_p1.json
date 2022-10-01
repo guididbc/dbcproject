@@ -111,12 +111,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_csv_cidades_dani",
-						"type": "DatasetReference",
-						"parameters": {
-							"container": "sistema",
-							"filename": "moviesDB.csv"
-						}
+						"referenceName": "ds_csv_moviesDB_dani",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [

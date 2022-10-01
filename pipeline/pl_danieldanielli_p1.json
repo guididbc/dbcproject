@@ -60,7 +60,7 @@
 						"referenceName": "ds_bronze_dani",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "bronze/DanielDanielli/",
+							"container": "bronze/DanielDanielli/cidades",
 							"filename": "@replace('cidades.csv', '.csv', '.parquet')"
 						}
 					}
@@ -124,7 +124,7 @@
 						"referenceName": "ds_bronze_dani",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "bronze/DanielDanielli/",
+							"container": "bronze/DanielDanielli/moviesDB",
 							"filename": "@replace('moviesDB.csv', '.csv', '.parquet')"
 						}
 					}

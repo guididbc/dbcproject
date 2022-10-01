@@ -1,5 +1,5 @@
 {
-	"name": "ds_csv_dani",
+	"name": "ds_csv_cidades_dani",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",
@@ -21,10 +21,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().filename",
-					"type": "Expression"
-				},
+				"fileName": "cidades.csv",
+				"folderPath": "csvfiles",
 				"fileSystem": {
 					"value": "@dataset().container",
 					"type": "Expression"

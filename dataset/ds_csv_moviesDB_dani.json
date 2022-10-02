@@ -33,6 +33,11 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "movie;title;genres;year;Rating;Rotton_Tomato",
+				"type": "String"
+			}
+		]
 	}
 }

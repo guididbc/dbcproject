@@ -4,7 +4,7 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Nome do Data Factory",
+			"metadata": "Data Factory name",
 			"defaultValue": "Factory-Learn-Data-DBC"
 		},
 		"lk_datalake_properties_typeProperties_url": {
@@ -21,11 +21,11 @@
 		},
 		"containerUri": {
 			"type": "string",
-			"metadata": "URI para a conta de armazenamento contendo os modelos do ARM vinculados"
+			"metadata": "URI to storage account containing linked ARM templates"
 		},
 		"containerSasToken": {
 			"type": "string",
-			"metadata": "Token SAS para a conta de armazenamento contendo modelos do ARM vinculados"
+			"metadata": "Sas token to storage account containing linked ARM templates"
 		}
 	},
 	"variables": {
@@ -77,6 +77,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'Factory-Learn-Data-DBC_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "Factory-Learn-Data-DBC_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'Factory-Learn-Data-DBC_ArmTemplate_1')]"
 			]
 		}
 	]

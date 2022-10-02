@@ -4,7 +4,7 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Nome do Data Factory",
+			"metadata": "Data Factory name",
 			"defaultValue": "Factory-Learn-Data-DBC"
 		}
 	},
@@ -1001,7 +1001,7 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "danieldanielli_p2"
+					"name": "danieldanielli"
 				},
 				"annotations": []
 			},
@@ -1410,7 +1410,143 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "danieldanielli_p2"
+					"name": "danieldanielli"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_danieldanielli_p3')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Retorna Tabelas",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME\nFROM INFORMATION_SCHEMA.TABLES \n  WHERE TABLE_TYPE='BASE TABLE'\n  and TABLE_SCHEMA = 'dani'",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_dbsql",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema": "*",
+									"table": "*"
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Retorna Tabelas",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Retorna Tabelas').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "copia tabelas para bronze",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_dbsql",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema": {
+													"value": "@item().TABLE_SCHEMA",
+													"type": "Expression"
+												},
+												"table": {
+													"value": "@item().TABLE_NAME",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_bronze",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": "bronze/DanielDanielli/table_sql",
+												"Filename": {
+													"value": "@concat(concat(item().TABLE_SCHEMA, '_'),item().TABLE_NAME)",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "danieldanielli"
 				},
 				"annotations": []
 			},
@@ -2592,6 +2728,107 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/df_daniel')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Danieldanielli"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_dbsql",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dbsql",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_bronze_dani",
+								"type": "DatasetReference"
+							},
+							"name": "dbdestino"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "surrogateKey1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as string,",
+						"          cor as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          id as string,",
+						"          cor as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source1, source2 join(source1@id == source2@id,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 select(mapColumn(",
+						"          id = source1@id,",
+						"          cor = source1@cor,",
+						"          cor_2 = source2@cor",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 keyGenerate(output(sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          id,",
+						"          cor,",
+						"          cor_2,",
+						"          sk",
+						"     ),",
+						"     partitionBy('key',",
+						"          0,",
+						"          cor",
+						"     )) ~> dbdestino"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/df_pratica')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -2801,6 +3038,62 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_danieldanielli_p4')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Pipeline_p2",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_danieldanielli_p2",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline P3",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline_p2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_danieldanielli_p3",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "danieldanielli"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_danieldanielli_p2')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_danieldanielli_p3')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_main')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2891,7 +3184,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tr_pl_main')]",
+			"name": "[concat(parameters('factoryName'), '/tr_pl_daniel_main')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2900,7 +3193,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "pl_pratica04",
+							"referenceName": "pl_danieldanielli_p4",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -2909,27 +3202,15 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Month",
-						"interval": 15,
-						"startTime": "2022-09-30T09:00:00",
-						"endTime": "2022-09-30T10:05:00",
-						"timeZone": "E. South America Standard Time",
-						"schedule": {
-							"minutes": [
-								5
-							],
-							"hours": [
-								9
-							],
-							"monthDays": [
-								-1
-							]
-						}
+						"frequency": "Minute",
+						"interval": 1,
+						"startTime": "2022-10-02T14:52:00",
+						"timeZone": "E. South America Standard Time"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_pratica04')]"
+				"[concat(variables('factoryId'), '/pipelines/pl_danieldanielli_p4')]"
 			]
 		}
 	]

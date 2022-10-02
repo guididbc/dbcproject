@@ -136,6 +136,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table dld.cidades",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -166,8 +167,8 @@
 									"referenceName": "ds_sql_p2_dani",
 									"type": "DatasetReference",
 									"parameters": {
-										"Esquema": "daniel",
-										"Tabela": "new_cidades"
+										"Esquema": "dld",
+										"Tabela": "cidades"
 									}
 								}
 							]
@@ -177,6 +178,7 @@
 			},
 			{
 				"name": "ForEach cor",
+				"description": "truncate table daniel.cor",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -296,6 +298,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table daniel.moviesDB_ajustado",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -327,7 +330,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Esquema": "daniel",
-										"Tabela": "new_moviesDB"
+										"Tabela": "moviesDB_ajustado"
 									}
 								}
 							]

@@ -218,6 +218,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table dani.cor",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": true,
 									"tableOption": "autoCreate",

@@ -14,18 +14,10 @@
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Day",
+				"frequency": "Minute",
 				"interval": 1,
 				"startTime": "2022-10-02T14:52:00",
-				"timeZone": "E. South America Standard Time",
-				"schedule": {
-					"minutes": [
-						58
-					],
-					"hours": [
-						14
-					]
-				}
+				"timeZone": "E. South America Standard Time"
 			}
 		}
 	}

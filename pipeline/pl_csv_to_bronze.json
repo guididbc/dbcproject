@@ -1,0 +1,139 @@
+{
+	"name": "pl_csv_to_bronze",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copia cidades",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_csv_viniessinger",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "csvfiles",
+							"filename": "cidades.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_parquet_viniessinger",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/vinicius_essinger",
+							"filename": "cidades.parquet"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copia moviesDB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_csv_viniessinger",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "csvfiles",
+							"filename": "moviesDB.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_parquet_viniessinger",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/vinicius_essinger",
+							"filename": "moviesDB.parquet"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "ViniciusEssinger_P2"
+		},
+		"annotations": []
+	}
+}

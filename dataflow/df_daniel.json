@@ -1,0 +1,17 @@
+{
+	"name": "df_daniel",
+	"properties": {
+		"folder": {
+			"name": "Danieldanielli"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				""
+			]
+		}
+	}
+}

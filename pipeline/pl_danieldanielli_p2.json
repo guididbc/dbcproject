@@ -1,0 +1,402 @@
+{
+	"name": "pl_danieldanielli_p2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Ler arquivos Bronze cor",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_bronze_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/cor",
+							"filename": "*"
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "Ler arquivos Bronze_movies",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_bronze_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/moviesDB",
+							"filename": "*"
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "Ler arquivos Bronze cidades",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_bronze_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/cidades",
+							"filename": "*"
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "ForEach cidades",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Ler arquivos Bronze cidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Ler arquivos Bronze cidades').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copiar cidades",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table dani.cidades",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_bronze_dani",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "bronze/DanielDanielli/cidades",
+										"filename": "@item().name"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sql_p2_dani",
+									"type": "DatasetReference",
+									"parameters": {
+										"Esquema": "dani",
+										"Tabela": "cidades"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "ForEach cor",
+				"description": "truncate table daniel.cor",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Ler arquivos Bronze cor",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Ler arquivos Bronze cor').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copiar cor",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table dani.cor",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": true,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_bronze_dani",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "bronze/DanielDanielli/cor",
+										"filename": "@item().name"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sql_p2_dani",
+									"type": "DatasetReference",
+									"parameters": {
+										"Esquema": "dani",
+										"Tabela": "cor"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "ForEach movies",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Ler arquivos Bronze_movies",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Ler arquivos Bronze_movies').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copiar movies",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table dani.moviesDB",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_bronze_dani",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "bronze/DanielDanielli/moviesDB",
+										"filename": "@item().name"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sql_p2_dani",
+									"type": "DatasetReference",
+									"parameters": {
+										"Esquema": "dani",
+										"Tabela": "moviesDB"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Remove duplicados cor",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ForEach cor",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_remove_cores_duplicadas]"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "remove duplicados cidade",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ForEach cidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_remove_cidades_duplicadas]"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "danieldanielli_p2"
+		},
+		"annotations": []
+	}
+}

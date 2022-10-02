@@ -1,0 +1,213 @@
+{
+	"name": "pl_danieldanielli_p1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copia Cidades",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_csv_cidades_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sistema",
+							"filename": "cidades.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_bronze_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/DanielDanielli/cidades",
+							"filename": "@replace('cidades.csv', '.csv', '.parquet')"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copia movies",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "movie",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "movie",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "title",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "title",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "genres",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "genres",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "year",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "year",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Rating",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rating",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Rotton Tomato",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rotton_Tomato",
+									"physicalType": "UTF8"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_csv_moviesDB_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sistema/",
+							"filename": "moviesDB.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_bronze_dani",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "bronze/DanielDanielli/moviesDB",
+							"filename": "@replace('moviesDB.csv', '.csv', '.parquet')"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "danieldanielli_p2"
+		},
+		"annotations": []
+	}
+}

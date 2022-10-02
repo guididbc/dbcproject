@@ -1,5 +1,5 @@
 {
-	"name": "ds_csv_dani",
+	"name": "ds_parquet_dani",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",
@@ -14,10 +14,10 @@
 			}
 		},
 		"folder": {
-			"name": "danieldanielli_p1"
+			"name": "danieldanielli_p2"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
@@ -30,9 +30,7 @@
 					"type": "Expression"
 				}
 			},
-			"columnDelimiter": ";",
-			"escapeChar": "\\",
-			"quoteChar": "\""
+			"compressionCodec": "snappy"
 		},
 		"schema": []
 	}

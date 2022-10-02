@@ -218,6 +218,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "truncate table dld.cor",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": true,
 									"tableOption": "autoCreate",
@@ -248,7 +249,7 @@
 									"referenceName": "ds_sql_p2_dani",
 									"type": "DatasetReference",
 									"parameters": {
-										"Esquema": "daniel",
+										"Esquema": "dld",
 										"Tabela": "cor"
 									}
 								}

@@ -108,7 +108,7 @@
 									"referenceName": "ds_bronze",
 									"type": "DatasetReference",
 									"parameters": {
-										"Container": "bronze/Daniel?danielli/table_sql",
+										"Container": "bronze/DanielDanielli/table_sql",
 										"Filename": {
 											"value": "@concat(concat(item().TABLE_SCHEMA, '_'),item().TABLE_NAME)",
 											"type": "Expression"

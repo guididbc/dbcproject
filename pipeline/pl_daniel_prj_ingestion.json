@@ -122,6 +122,22 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Fail1",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "ForEach table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "deu erro nessa joça"
+				}
 			}
 		],
 		"folder": {

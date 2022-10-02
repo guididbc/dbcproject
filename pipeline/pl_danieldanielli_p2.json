@@ -298,7 +298,6 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table dld.moviesDB",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -329,7 +328,7 @@
 									"referenceName": "ds_sql_p2_dani",
 									"type": "DatasetReference",
 									"parameters": {
-										"Esquema": "dld",
+										"Esquema": "dani",
 										"Tabela": "moviesDB"
 									}
 								}

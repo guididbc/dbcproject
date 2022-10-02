@@ -218,7 +218,6 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table dani.cor",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": true,
 									"tableOption": "autoCreate",
@@ -337,6 +336,60 @@
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "Remove duplicados cor",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ForEach cor",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_remove_cores_duplicadas]"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "remove duplicados cidade",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ForEach cidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_remove_cidades_duplicadas]"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],

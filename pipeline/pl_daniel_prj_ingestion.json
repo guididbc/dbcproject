@@ -136,7 +136,11 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"message": "deu erro nessa joça"
+					"message": "deu erro nessa joça",
+					"errorCode": {
+						"value": "@activity('Copy data1').output.status",
+						"type": "Expression"
+					}
 				}
 			}
 		],

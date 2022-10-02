@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Get Metadata MoviesDB",
+				"name": "Get Metadata Files",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -37,7 +37,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata MoviesDB",
+						"activity": "Get Metadata Files",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,6 +45,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata Files').output.childItems",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "Copy data1",
@@ -120,7 +124,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"items": {
-									"value": "@item().name",
+									"value": "@activity('Get Metadata Files').output.childItems",
 									"type": "Expression"
 								},
 								"condition": {
@@ -136,7 +140,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"items": {
-									"value": "@item().name",
+									"value": "@activity('Get Metadata Files').output.childItems",
 									"type": "Expression"
 								},
 								"condition": {

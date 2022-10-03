@@ -47,7 +47,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_csv_viniessinger",
+						"referenceName": "ds_csv_viniessinger_comma",
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "csvfiles",
@@ -111,7 +111,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_csv_viniessinger",
+						"referenceName": "ds_csv_viniessinger_comma",
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "csvfiles",

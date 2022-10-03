@@ -1,5 +1,5 @@
 {
-	"name": "ds_csv_viniessinger",
+	"name": "ds_csv_viniessinger_comma",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",
@@ -32,6 +32,7 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [

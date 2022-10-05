@@ -265,7 +265,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze/cunhadbc/cor",
-										"filename": "cor"
+										"filename": "@replace(item().name, '.parquet', '')"
 									}
 								}
 							],
@@ -478,7 +478,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze/cunhadbc/moviesDB",
-										"filename": "moviesDB"
+										"filename": "@replace(item().name, '.parquet', '')"
 									}
 								}
 							],

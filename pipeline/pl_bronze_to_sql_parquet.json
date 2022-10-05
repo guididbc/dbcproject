@@ -138,7 +138,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[usp_remove_cidades_duplicadas]"
+					"storedProcedureName": "[dbo].[usp_remove_cidades_duplicadas_cunhadbc]"
 				},
 				"linkedServiceName": {
 					"referenceName": "lk_dbsql",
@@ -217,7 +217,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table pratica.cunhadbc_cor",
+									"preCopyScript": "truncate table pratica.cunhadbc_cor;",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -226,6 +226,32 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "Prop_0",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "id",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Prop_1",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "cor",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										}
+									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,
@@ -239,10 +265,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze/cunhadbc/cor",
-										"filename": {
-											"value": "@replace(item().name, '.parquet', '')",
-											"type": "Expression"
-										}
+										"filename": "cor"
 									}
 								}
 							],
@@ -280,7 +303,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[usp_remove_cores_duplicadas]"
+					"storedProcedureName": "[dbo].[usp_remove_cores_duplicadas_cunhadbc]"
 				},
 				"linkedServiceName": {
 					"referenceName": "lk_dbsql",
@@ -359,7 +382,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "truncate table pratica.cunhadbc_moviesDB",
+									"preCopyScript": "truncate table pratica.cunhadbc_moviesDB;",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -368,6 +391,80 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "Prop_0",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "movie",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Prop_1",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "title",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Prop_2",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "genres",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Prop_3",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "year",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Prop_4",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "rating",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Prop_5",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "rotton_tomato",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										}
+									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,
@@ -381,10 +478,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze/cunhadbc/moviesDB",
-										"filename": {
-											"value": "@replace(item().name, '.parquet', '')",
-											"type": "Expression"
-										}
+										"filename": "moviesDB"
 									}
 								}
 							],
@@ -398,6 +492,38 @@
 									}
 								}
 							]
+						}
+					]
+				}
+			},
+			{
+				"name": "cabecalho_cor",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "proc_cor",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": "--sp_rename 'pratica.cunhadbc_cor.Prop_0','id','column',\n--sp_rename 'pratica.cunhadbc_cor.Prop_1','cor','column';\ndelete from [pratica].[cunhadbc_cor] where id = 'id';"
 						}
 					]
 				}

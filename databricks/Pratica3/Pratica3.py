@@ -100,3 +100,8 @@ display(df_tabela)
 
 # MAGIC %sql
 # MAGIC use default
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC use default

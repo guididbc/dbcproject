@@ -58,7 +58,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "bronze/biamarostica/cor",
-							"filename": "*"
+							"filename": "item().name"
 						}
 					}
 				]

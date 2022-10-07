@@ -77,6 +77,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Cidades').output.childItems",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "Copy data1_copy1",
@@ -154,6 +158,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Cor').output.childItems",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "copia e envia",

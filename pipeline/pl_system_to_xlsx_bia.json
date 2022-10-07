@@ -47,7 +47,7 @@
 						"referenceName": "ds_xlsx_bia",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "sistema/slsxfiles",
+							"container": "sistema/xlsxfiles",
 							"filename": "*"
 						}
 					}

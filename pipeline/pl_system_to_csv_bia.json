@@ -54,7 +54,7 @@
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@not(equals(item().name, 'out123.csv'))",
+						"value": "@not(or(equals(item().name, 'out123.csv'), \n        equals(item().name, 'moviesDB.csv')))",
 						"type": "Expression"
 					}
 				}

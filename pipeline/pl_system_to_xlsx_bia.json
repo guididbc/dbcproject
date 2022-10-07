@@ -48,7 +48,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": "sistema/xlsxfiles",
-							"filename": "item().name"
+							"filename": "cor.xlsx"
 						}
 					}
 				],

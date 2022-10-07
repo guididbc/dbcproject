@@ -65,7 +65,7 @@
 				}
 			},
 			{
-				"name": "for each cor_copy1",
+				"name": "for each cidades",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -142,7 +142,7 @@
 				}
 			},
 			{
-				"name": "for each cor_copy1_copy1",
+				"name": "for each cor",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -156,7 +156,8 @@
 				"typeProperties": {
 					"activities": [
 						{
-							"name": "Copy data1_copy1_copy1",
+							"name": "copia e envia",
+							"description": "copia da bronze e envia para o dbsql",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {

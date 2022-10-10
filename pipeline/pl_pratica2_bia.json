@@ -54,9 +54,7 @@
 							"filename": "*"
 						}
 					},
-					"fieldList": [
-						"childItems"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true,
@@ -65,11 +63,11 @@
 				}
 			},
 			{
-				"name": "for each cidades",
+				"name": "for each cor",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Cidades",
+						"activity": "Cor",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -78,12 +76,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Cidades').output.childItems",
+						"value": "@activity('Cor').output.childItems",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "Copy data1_copy1",
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -106,7 +104,8 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -123,7 +122,7 @@
 									"referenceName": "ds_bronze_bia",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bronze/biamarostica/cidades",
+										"container": "bronze/biamarostica/cor",
 										"filename": {
 											"value": "@item().name",
 											"type": "Expression"
@@ -136,8 +135,8 @@
 									"referenceName": "ds_dbsql_bia",
 									"type": "DatasetReference",
 									"parameters": {
-										"schema": "biacidade",
-										"table": "cidade"
+										"schema": "pratica",
+										"table": "cor"
 									}
 								}
 							]
@@ -146,11 +145,11 @@
 				}
 			},
 			{
-				"name": "for each cor",
+				"name": "for each cor_copy1",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Cor",
+						"activity": "Cidades",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -158,14 +157,9 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"items": {
-						"value": "@activity('Cor').output.childItems",
-						"type": "Expression"
-					},
 					"activities": [
 						{
-							"name": "copia e envia",
-							"description": "copia da bronze e envia para o dbsql",
+							"name": "Copy data1_copy1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -218,7 +212,7 @@
 									"referenceName": "ds_dbsql_bia",
 									"type": "DatasetReference",
 									"parameters": {
-										"schema": "biacor",
+										"schema": "pratica",
 										"table": "cor"
 									}
 								}

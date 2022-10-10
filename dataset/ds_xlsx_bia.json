@@ -1,5 +1,5 @@
 {
-	"name": "ds_csv_bia",
+	"name": "ds_xlsx_bia",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lk_datalake",
@@ -17,8 +17,9 @@
 			"name": "biamarostica"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "Plan1",
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
@@ -30,15 +31,8 @@
 					"type": "Expression"
 				}
 			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
+			"firstRowAsHeader": true
 		},
-		"schema": [
-			{
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

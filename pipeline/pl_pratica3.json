@@ -43,7 +43,13 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('retorna tabela').output.value",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {

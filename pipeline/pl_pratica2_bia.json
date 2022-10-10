@@ -81,7 +81,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "copia e envia cor",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -145,7 +145,7 @@
 				}
 			},
 			{
-				"name": "for each cor_copy1",
+				"name": "for each cidades",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -163,7 +163,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1_copy1",
+							"name": "copia e envia cidades",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -203,7 +203,7 @@
 									"referenceName": "ds_bronze_bia",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "bronze/biamarostica/cor",
+										"container": "bronze/biamarostica/cidades",
 										"filename": {
 											"value": "@item().name",
 											"type": "Expression"
@@ -217,7 +217,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "biacor"
+										"table": "biacidades"
 									}
 								}
 							]

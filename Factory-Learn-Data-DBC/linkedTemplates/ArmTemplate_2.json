@@ -13,6 +13,114 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/df_pratica_cunhadbc')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "cunhadbc - df"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "cunhadbc_ds_bronze_sql",
+								"type": "DatasetReference"
+							},
+							"name": "customer"
+						},
+						{
+							"dataset": {
+								"referenceName": "cunhadbc_ds_bronze_sql",
+								"type": "DatasetReference"
+							},
+							"name": "cidade"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "cunhadbc_ds_bronze_parquet",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "surrogateKey1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customer_id as string,",
+						"          customer_unique_id as string,",
+						"          customer_zip_code_prefix as string,",
+						"          customer_city as string,",
+						"          customer_state as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> customer",
+						"source(output(",
+						"          cod_cidade as string,",
+						"          nome_cidade as string,",
+						"          sigla_estado as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> cidade",
+						"customer, cidade join(customer_state == sigla_estado,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 select(mapColumn(",
+						"          customer_id,",
+						"          customer_unique_id,",
+						"          customer_zip_code_prefix,",
+						"          customer_city,",
+						"          customer_state,",
+						"          cod_cidade",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 aggregate(groupBy(customer_state),",
+						"     qtd_customer = countDistinct(customer_id)) ~> aggregate1",
+						"aggregate1 keyGenerate(output(sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          customer_state,",
+						"          qtd_customer,",
+						"          sk",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_danieldanielli_p4')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",

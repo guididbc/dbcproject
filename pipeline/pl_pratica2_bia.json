@@ -137,7 +137,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cor"
+										"table": "cidade"
 									}
 								}
 							]

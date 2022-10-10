@@ -108,7 +108,7 @@
 									"referenceName": "ds_bronze_bia",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "biamarostica/table_sql",
+										"container": "bronze/biamarostica/table_sql",
 										"filename": {
 											"value": "@item().TABLE_NAME",
 											"type": "Expression"

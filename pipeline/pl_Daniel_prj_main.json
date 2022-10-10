@@ -1,0 +1,60 @@
+{
+	"name": "pl_Daniel_prj_main",
+	"properties": {
+		"activities": [
+			{
+				"name": "ingestao_para_Bronze",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "obtem_processa_dados_bronze_para_silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ingestao_para_Bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "processa_silver_para_gold",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "obtem_processa_dados_bronze_para_silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			}
+		],
+		"folder": {
+			"name": "daniel_projeto"
+		},
+		"annotations": []
+	}
+}

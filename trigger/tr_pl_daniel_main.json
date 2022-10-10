@@ -9,12 +9,18 @@
 					"referenceName": "pl_danieldanielli_p4",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "pl_Daniel_prj_main",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Minute",
+				"frequency": "Day",
 				"interval": 1,
 				"startTime": "2022-10-02T14:52:00",
 				"timeZone": "E. South America Standard Time"

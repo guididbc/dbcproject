@@ -13,6 +13,83 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_sql_to_bronze')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"schema": {
+						"type": "string"
+					},
+					"table": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "project"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_xlsx_bia')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lk_datalake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "biamarostica"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Plan1",
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -372,7 +449,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_remove_cidades_duplicadas]"
+							"storedProcedureName": "[[dbo].[usp_remove_cidades_duplicadas_cunhadbc]"
 						},
 						"linkedServiceName": {
 							"referenceName": "lk_dbsql",
@@ -451,7 +528,7 @@
 										},
 										"sink": {
 											"type": "AzureSqlSink",
-											"preCopyScript": "truncate table pratica.cunhadbc_cor",
+											"preCopyScript": "truncate table pratica.cunhadbc_cor;",
 											"writeBehavior": "insert",
 											"sqlWriterUseTableLock": false,
 											"tableOption": "autoCreate",
@@ -460,6 +537,32 @@
 										"enableStaging": false,
 										"translator": {
 											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "Prop_0",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "id",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Prop_1",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "cor",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												}
+											],
 											"typeConversion": true,
 											"typeConversionSettings": {
 												"allowDataTruncation": true,
@@ -473,10 +576,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"container": "bronze/cunhadbc/cor",
-												"filename": {
-													"value": "@replace(item().name, '.parquet', '')",
-													"type": "Expression"
-												}
+												"filename": "@replace(item().name, '.parquet', '')"
 											}
 										}
 									],
@@ -514,7 +614,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_remove_cores_duplicadas]"
+							"storedProcedureName": "[[dbo].[usp_remove_cores_duplicadas_cunhadbc]"
 						},
 						"linkedServiceName": {
 							"referenceName": "lk_dbsql",
@@ -593,7 +693,7 @@
 										},
 										"sink": {
 											"type": "AzureSqlSink",
-											"preCopyScript": "truncate table pratica.cunhadbc_moviesDB",
+											"preCopyScript": "truncate table pratica.cunhadbc_moviesDB;",
 											"writeBehavior": "insert",
 											"sqlWriterUseTableLock": false,
 											"tableOption": "autoCreate",
@@ -602,6 +702,80 @@
 										"enableStaging": false,
 										"translator": {
 											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "Prop_0",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "movie",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Prop_1",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "title",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Prop_2",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "genres",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Prop_3",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "year",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Prop_4",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "rating",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Prop_5",
+														"type": "String",
+														"physicalType": "UTF8"
+													},
+													"sink": {
+														"name": "rotton_tomato",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												}
+											],
 											"typeConversion": true,
 											"typeConversionSettings": {
 												"allowDataTruncation": true,
@@ -615,10 +789,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"container": "bronze/cunhadbc/moviesDB",
-												"filename": {
-													"value": "@replace(item().name, '.parquet', '')",
-													"type": "Expression"
-												}
+												"filename": "@replace(item().name, '.parquet', '')"
 											}
 										}
 									],
@@ -632,6 +803,38 @@
 											}
 										}
 									]
+								}
+							]
+						}
+					},
+					{
+						"name": "cabecalho_cor",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "proc_cor",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lk_dbsql",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "NonQuery",
+									"text": "--sp_rename 'pratica.cunhadbc_cor.Prop_0','id','column',\n--sp_rename 'pratica.cunhadbc_cor.Prop_1','cor','column';\ndelete from [pratica].[cunhadbc_cor] where id = 'id';"
 								}
 							]
 						}
@@ -1690,7 +1893,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sql_to_bronze')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_pratica02')]",
@@ -2247,6 +2452,287 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_pratica2_bia')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Cor",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_bronze_bia",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "bronze/biamarostica/cor",
+									"filename": "*"
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "Cidades",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_bronze_bia",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "bronze/biamarostica/cidades",
+									"filename": "*"
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "for each cor",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Cor",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Cor').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "copia e envia cor",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"preCopyScript": "TRUNCATE TABLE pratica.biacor",
+											"writeBehavior": "upsert",
+											"upsertSettings": {
+												"useTempDB": true,
+												"keys": [
+													"id"
+												]
+											},
+											"sqlWriterUseTableLock": false,
+											"tableOption": "autoCreate",
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_bronze_bia",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": "bronze/biamarostica/cor",
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_dbsql_bia",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema": "pratica",
+												"table": "biacor"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "for each cidades",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Cidades",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Cidades').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "copia e envia cidades",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"preCopyScript": "TRUNCATE TABLE pratica.biacidades",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"tableOption": "autoCreate",
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_bronze_bia",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": "bronze/biamarostica/cidades",
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_dbsql_bia",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema": "pratica",
+												"table": "biacidades"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Stored procedure cor",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "for each cor",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[bia_remover_cor_duplicada]"
+						},
+						"linkedServiceName": {
+							"referenceName": "lk_dbsql",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "biamarostica"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_system_to_bronze_csv')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2616,7 +3102,7 @@
 								"type": "Expression"
 							},
 							"condition": {
-								"value": "@not(equals(item().name, 'out123.csv'))",
+								"value": "@not(or(equals(item().name, 'out123.csv'), \n        equals(item().name, 'moviesDB.csv')))",
 								"type": "Expression"
 							}
 						}
@@ -2701,7 +3187,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"container": {
-													"value": "@concat('bronze/biamarostica', replace(item().name, '.csv', ''))",
+													"value": "@concat('bronze/biamarostica/', replace(item().name, '.csv', ''))",
 													"type": "Expression"
 												},
 												"filename": {
@@ -2726,6 +3212,87 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_system_to_xlsx_bia')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "copia arquivo",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_xlsx_bia",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sistema/xlsxfiles",
+									"filename": "cor.xlsx"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_bronze_bia",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "bronze/biamarostica/cor",
+									"filename": "cor.parquet"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "biamarostica"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_xlsx_bia')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/df_daniel')]",
@@ -3036,182 +3603,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_danieldanielli_p4')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Execute Pipeline_p2",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_danieldanielli_p2",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Pipeline P3",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline_p2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_danieldanielli_p3",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "danieldanielli"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_danieldanielli_p2')]",
-				"[concat(variables('factoryId'), '/pipelines/pl_danieldanielli_p3')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_main')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "ingestion_bronze",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_ingestion",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": false,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "project"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_ingestion')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_pratica04')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "pl2",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_pratica02",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "pl3",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "pl2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "pl_pratica03",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": false,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pratica"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_pratica02')]",
-				"[concat(variables('factoryId'), '/pipelines/pl_pratica03')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tr_pl_daniel_main')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pl_danieldanielli_p4",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 1,
-						"startTime": "2022-10-02T14:52:00",
-						"timeZone": "E. South America Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_danieldanielli_p4')]"
-			]
 		}
 	]
 }

@@ -157,6 +157,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Cidades').output.childItems",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "Copy data1_copy1",

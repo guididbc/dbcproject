@@ -136,7 +136,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cor"
+										"table": "biacor"
 									}
 								}
 							]
@@ -217,7 +217,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cor"
+										"table": "biacor"
 									}
 								}
 							]

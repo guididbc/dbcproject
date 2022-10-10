@@ -106,7 +106,13 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"preCopyScript": "TRUNCATE TABLE pratica.biacor",
-									"writeBehavior": "insert",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": true,
+										"keys": [
+											"id"
+										]
+									},
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
 									"disableMetricsCollection": false

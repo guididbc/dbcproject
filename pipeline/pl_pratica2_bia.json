@@ -105,6 +105,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "TRUNCATE TABLE pratica.biacor",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -188,6 +189,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "TRUNCATE TABLE pratica.biacidades",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",

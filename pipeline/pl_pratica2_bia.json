@@ -218,7 +218,7 @@
 									"referenceName": "ds_dbsql_bia",
 									"type": "DatasetReference",
 									"parameters": {
-										"schema": "pratica",
+										"schema": "biacor",
 										"table": "cor"
 									}
 								}

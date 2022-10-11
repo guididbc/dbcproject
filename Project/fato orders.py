@@ -55,15 +55,23 @@ display(df_status)
 
 # COMMAND ----------
 
+display(df_customers)
+
+# COMMAND ----------
+
 # DBTITLE 1,Join
 df_join = df_orders.join(df_status, df_orders.Status == df_status.order_status, "left")\
 .select(df_orders.id,df_orders.IdOrder,df_orders.IdCustomer,df_status.id.alias("skStatus"),df_orders.DtCompra,df_orders.DataAprovacao,df_orders.EntregaLogis,df_orders.EntregaCliente,df_orders.EstimativaEntrega,df_orders.status_p)
 
 # COMMAND ----------
 
+display(df_join.limit(1))
+
+# COMMAND ----------
+
 # DBTITLE 1,Join 2
 df_join = df_join.join(df_customers, df_join.IdCustomer == df_customers.customerId, "left")\
-.select(df_orders.id,df_orders.idOrder,df_customers.id.alias("skCustomer"),df_join.id.alias("skStatus"),df_orders.DtCompra,df_orders.DataAprovacao,df_orders.EntregaLogis,df_orders.EstimativaEntrega,df_orders.EntregaCliente,df_orders.status_p)
+.select(df_join.id,df_join.IdOrder,df_customers.id.alias("skCustomer"),df_join.id.alias("skStatus"),df_join.DtCompra,df_join.DataAprovacao,df_join.EntregaLogis,df_join.EstimativaEntrega,df_join.EntregaCliente,df_join.status_p)
 
 # COMMAND ----------
 

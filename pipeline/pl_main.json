@@ -20,7 +20,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "ingestion_bronze",
+						"activity": "Wait1_copy1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -40,7 +40,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "TRANSFORMATION - bronze to silver",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -53,6 +53,38 @@
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "TRANSFORMATION - bronze to silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 10
+				}
+			},
+			{
+				"name": "Wait1_copy1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "ingestion_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 10
 				}
 			}
 		],

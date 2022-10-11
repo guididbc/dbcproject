@@ -66,6 +66,22 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"additionalColumns": [
+										{
+											"name": "dt_ingestion",
+											"value": {
+												"value": "@utcNow()",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "source",
+											"value": {
+												"value": "@item().TABLE_NAME",
+												"type": "Expression"
+											}
+										}
+									],
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},

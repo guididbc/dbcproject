@@ -61,7 +61,9 @@ df_join = df_orders.join(df_status, df_orders.Status == df_status.order_status, 
 
 # COMMAND ----------
 
-#df_join = df_join.join(df_customers,)
+# DBTITLE 1,Join 2
+df_join = df_join.join(df_customers, df_join.IdCustomer == df_customers.customerId, "left")\
+.select(df_orders.id,df_orders.idOrder,df_customers.id.alias("skCustomer"),df_join.id.alias("skStatus"),df_orders.DtCompra,df_orders.DataAprovacao,df_orders.EntregaLogis,df_orders.EstimativaEntrega,df_orders.EntregaCliente,df_orders.status_p)
 
 # COMMAND ----------
 

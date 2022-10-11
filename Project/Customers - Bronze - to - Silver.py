@@ -11,6 +11,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../Project/Connection"
+
+# COMMAND ----------
+
 # MAGIC %run "../Project/configuration"
 
 # COMMAND ----------

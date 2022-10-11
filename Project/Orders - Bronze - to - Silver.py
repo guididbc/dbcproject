@@ -13,6 +13,10 @@ from pyspark.sql.functions import *
 
 # COMMAND ----------
 
+# MAGIC %run "../Project/Connection"
+
+# COMMAND ----------
+
 # MAGIC %run "../Project/configuration"
 
 # COMMAND ----------

@@ -24,10 +24,6 @@ grava_payments_not_sp = '/FileStore/tables/daniel_pratica/payments'
 
 # COMMAND ----------
 
-print(filtro_customers)
-
-# COMMAND ----------
-
 type("cm_arq_orders")
 
 # COMMAND ----------

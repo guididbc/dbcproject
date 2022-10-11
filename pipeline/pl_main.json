@@ -14,6 +14,46 @@
 					},
 					"waitOnCompletion": false
 				}
+			},
+			{
+				"name": "TRANSFORMATION - bronze to silver",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ingestion_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_bronze-to-silver",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": false
+				}
+			},
+			{
+				"name": "GOLD - Silver - to - Gold",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "TRANSFORMATION - bronze to silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_silver_to_gold",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {

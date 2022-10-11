@@ -1,0 +1,51 @@
+{
+	"name": "pl_bronze-to-silver",
+	"properties": {
+		"activities": [
+			{
+				"name": "Customers - bronze - to - silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/guilherme.dias@dbccompany.com.br/dbcproject/Project/Customers - Bronze - to - Silver"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_adb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Orders - bronze - to - silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/guilherme.dias@dbccompany.com.br/dbcproject/Project/Orders - Bronze - to - Silver"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_adb",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "project"
+		},
+		"annotations": []
+	}
+}

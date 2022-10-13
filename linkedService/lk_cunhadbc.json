@@ -1,0 +1,13 @@
+{
+	"name": "lk_cunhadbc",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-3618214699095865.5.azuredatabricks.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/898a90cc-e0ce-4915-85d7-e392596cbcc4/resourceGroups/Group_Learn_Data_DBC/providers/Microsoft.Databricks/workspaces/Workspace_Learn_Data_DBC",
+			"existingClusterId": "1011-130910-dfkwg835"
+		}
+	}
+}

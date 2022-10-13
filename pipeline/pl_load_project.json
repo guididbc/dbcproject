@@ -3,24 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ingestion_bronze",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pl_bronze_to_sql_dbo_project",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
 				"name": "bronze - orders - to silver",
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "ingestion_bronze",
+						"activity": "ingestion to bronze",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -47,7 +34,7 @@
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "ingestion_bronze",
+						"activity": "ingestion to bronze",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -154,6 +141,19 @@
 				"linkedServiceName": {
 					"referenceName": "lk_cunhadbc",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ingestion to bronze",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_bronze_to_sql_dbo_project",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],

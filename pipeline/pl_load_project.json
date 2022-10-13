@@ -1,5 +1,5 @@
 {
-	"name": "pipeline3",
+	"name": "pl_load_project",
 	"properties": {
 		"activities": [
 			{
@@ -13,6 +13,147 @@
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "bronze - orders - to silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ingestion_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/marcio.cunha@dbccompany.com.br/dbcproject/databricks/cunhadbc/01 order-bronze-to-silver"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_cunhadbc",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "bronze - customers - to silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ingestion_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/marcio.cunha@dbccompany.com.br/dbcproject/databricks/cunhadbc/02 customers-bronze-to-silver"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_cunhadbc",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "silver  - dim - status - to gold",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "bronze - orders - to silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/marcio.cunha@dbccompany.com.br/dbcproject/databricks/cunhadbc/03 dimStatus"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_cunhadbc",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "silver - dim - customers - to gold",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "bronze - customers - to silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/marcio.cunha@dbccompany.com.br/dbcproject/databricks/cunhadbc/04 dimCustomer"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_cunhadbc",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "gold - orders",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "silver  - dim - status - to gold",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "silver - dim - customers - to gold",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/marcio.cunha@dbccompany.com.br/dbcproject/databricks/cunhadbc/05 fatoOrders"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_cunhadbc",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],

@@ -113,7 +113,7 @@
 											"type": "Expression"
 										},
 										"filename": {
-											"value": "@concat(concat(item().TABLE_SCHEMA, '_'), item().TABLE_NAME)",
+											"value": "@item().TABLE_NAME",
 											"type": "Expression"
 										}
 									}

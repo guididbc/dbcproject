@@ -19,7 +19,7 @@
 						"referenceName": "ds_sistema_csv",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "sistema",
+							"container": "sistema/csvfiles",
 							"filename": "*.csv"
 						}
 					},

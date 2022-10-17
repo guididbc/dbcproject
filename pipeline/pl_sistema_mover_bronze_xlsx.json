@@ -45,7 +45,11 @@
 				"inputs": [
 					{
 						"referenceName": "ds_xlsx",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sistema/xlsxfiles",
+							"filename": "cor.xlsx"
+						}
 					}
 				],
 				"outputs": [

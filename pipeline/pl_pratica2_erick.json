@@ -96,7 +96,7 @@
 									"parameters": {
 										"container": "bronze/cor",
 										"filename": {
-											"value": "@item().childItems.name",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}

@@ -74,6 +74,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "TRUNCATE TABLE pratica.cor_erick",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -108,7 +109,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cor_erick_n"
+										"table": "cor_erick"
 									}
 								}
 							]
@@ -188,6 +189,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "TRUNCATE TABLE pratica.cidades_erick_n",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",
@@ -302,6 +304,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": "TRUNCATE TABLE pratica.moviesDB_erick",
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"tableOption": "autoCreate",

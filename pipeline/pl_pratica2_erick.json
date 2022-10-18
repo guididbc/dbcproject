@@ -222,7 +222,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cidades_erick"
+										"table": "cidades_erick_n"
 									}
 								}
 							]

@@ -119,6 +119,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata Cor').output.childItems",
+						"type": "Expression"
+					},
 					"isSequential": true,
 					"activities": [
 						{

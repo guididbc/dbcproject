@@ -108,7 +108,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "pratica",
-										"table": "cor_erick"
+										"table": "cor_erick_n"
 									}
 								}
 							]

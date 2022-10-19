@@ -372,6 +372,33 @@
 					"referenceName": "lk_dbsql",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "SP Cidades",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ForEach Cidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_remove_cidades_duplicadas_erick]"
+				},
+				"linkedServiceName": {
+					"referenceName": "lk_dbsql",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"folder": {

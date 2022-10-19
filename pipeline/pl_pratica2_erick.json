@@ -353,7 +353,7 @@
 					{
 						"activity": "ForEach Cor",
 						"dependencyConditions": [
-							"Skipped"
+							"Succeeded"
 						]
 					}
 				],

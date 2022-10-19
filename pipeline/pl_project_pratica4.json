@@ -64,12 +64,9 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "ParquetSource",
-									"storeSettings": {
-										"type": "AzureBlobFSReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									}
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "ParquetSink",
@@ -92,14 +89,14 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_bronze_project",
+									"referenceName": "ds_dbsql_project",
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": {
 											"value": "@item().TABLE_SCHEMA",
 											"type": "Expression"
 										},
-										"filename": {
+										"tablename": {
 											"value": "@item().TABLE_NAME",
 											"type": "Expression"
 										}

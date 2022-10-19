@@ -71,7 +71,24 @@
 										"enablePartitionDiscovery": false
 									}
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -80,6 +97,22 @@
 									"parameters": {
 										"schema": {
 											"value": "@item().TABLE_SCHEMA",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@item().TABLE_NAME",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_project",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@concat('ericksantana/project/',item().TABLE_NAME)",
 											"type": "Expression"
 										},
 										"filename": {

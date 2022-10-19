@@ -1,0 +1,44 @@
+{
+	"name": "pl_pratica_4",
+	"properties": {
+		"activities": [
+			{
+				"name": "pl2",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_pratica2_erick",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl3",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pratica3",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": false
+				}
+			}
+		],
+		"folder": {
+			"name": "ericksantana"
+		},
+		"annotations": []
+	}
+}

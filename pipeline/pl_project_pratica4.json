@@ -122,6 +122,25 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Fail1",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"errorCode": {
+						"value": "@activity('Copy data1').output.executionDetails",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {
